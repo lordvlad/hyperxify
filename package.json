@@ -1,0 +1,41 @@
+{
+  "name": "hyperxify",
+  "version": "1.0.0",
+  "description": "browserify transform for hyperx",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "keywords": [
+    "hyperx",
+    "vdom",
+    "syntax",
+    "virtual-dom",
+    "browserify",
+    "browserify-transform"
+  ],
+  "author": "substack",
+  "license": "BSD",
+  "dependencies": {
+    "falafel": "^1.2.0",
+    "hyperx": "^1.2.0",
+    "through2": "^2.0.0"
+  },
+  "devDependencies": {
+    "browserify": "^13.0.0",
+    "tape": "^4.4.0",
+    "virtual-dom": "^2.1.1"
+  },
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/substack/hyperxify.git"
+  },
+  "bugs": {
+    "url": "https://github.com/substack/hyperxify/issues"
+  },
+  "homepage": "https://github.com/substack/hyperxify#readme"
+}

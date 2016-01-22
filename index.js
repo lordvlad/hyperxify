@@ -7,16 +7,43 @@ module.exports = function (file, opts) {
   var h = null, mname = null
   var hx = hyperx(function (tagName, opts, children) {
     if (!h) return null
-    return { expr: h + '(' + JSON.stringify(tagName)
-      + ',' + JSON.stringify(opts)
+    var sopts = []
+    Object.keys(opts).forEach(function (key) {
+      if (opts[key] && typeof opts[key] === 'object'
+      && opts[key]._expr !== undefined) {
+        sopts.push(JSON.stringify(key) + ':' + opts[key]._expr)
+      } else {
+        sopts.push(JSON.stringify(key) + ':' + JSON.stringify(opts[key]))
+      }
+    })
+    return { _expr: h + '(' + JSON.stringify(tagName)
+      + ',{' + sopts.join(',') + '}'
       + ',[' + children.map(child).join(',')
       + '])' }
-  })
+  }, { concat: concat })
   return through(write, end)
 
+  function concat (a, b) {
+    var aexpr, bexpr, count = 0
+    if (a && typeof a === 'object' && a._expr !== undefined) {
+      aexpr = '(' + a._expr + ')'
+      count++
+    } else {
+      aexpr = JSON.stringify(a)
+    }
+    if (b && typeof b === 'object' && b._expr !== undefined) {
+      bexpr = '(' + b._expr + ')'
+      count++
+    } else {
+      bexpr = JSON.stringify(b)
+    }
+    if (count === 0) return String(a) + String(b)
+    return { _expr: aexpr + '+' + bexpr }
+  }
+
   function child (c) {
-    if (c && typeof c === 'object' && c.expr) {
-      return c.expr
+    if (c && typeof c === 'object' && c._expr !== undefined) {
+      return c._expr
     } else return JSON.stringify(c)
   }
 
@@ -35,7 +62,7 @@ module.exports = function (file, opts) {
         .concat(node.expressions.map(expr))
       var res = hx.apply(null, args)
       if (!res) return
-      node.parent.update(res.expr)
+      node.parent.update(res._expr)
     } else if (node.type === 'CallExpression'
     && node.callee && node.callee.name === 'require'
     && node.arguments.length === 1
@@ -52,4 +79,4 @@ module.exports = function (file, opts) {
 }
 
 function cooked (node) { return node.value.cooked }
-function expr (ex) { return { expr: ex.source() } }
+function expr (ex) { return { _expr: ex.source() } }

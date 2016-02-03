@@ -18,8 +18,8 @@ module.exports = function (file, opts) {
     })
     return { _expr: h + '(' + JSON.stringify(tagName)
       + ',{' + sopts.join(',') + '}'
-      + ',[' + children.map(child).join(',')
-      + '])' }
+      + (children && children.length ? (',[' + children.map(child).join(',') + ']') : '')
+      + ')' }
   }, { concat: concat })
   return through(write, end)
 

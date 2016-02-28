@@ -3,6 +3,7 @@ var through = require('through2')
 var hyperx = require('hyperx')
 
 module.exports = function (file, opts) {
+  if (/\.json$/.test(file)) return through()
   var bufs = []
   var h = null, mname = null
   var hx = hyperx(function (tagName, opts, children) {

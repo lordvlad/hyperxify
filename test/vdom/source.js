@@ -1,6 +1,7 @@
 var vdom = require('virtual-dom')
 var hyperx = require('hyperx')
 var hx = hyperx(vdom.h)
+var something = require('./something.json')
 
 var title = 'world'
 var wow = [1,2,3]

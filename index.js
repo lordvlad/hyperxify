@@ -5,7 +5,7 @@ var hyperx = require('hyperx')
 module.exports = function (file, opts) {
   if (/\.json$/.test(file)) return through()
   var bufs = []
-  var h = null, mname = null
+  var h = null, mname = null, tfn = null
   var hx = hyperx(function (tagName, opts, children) {
     if (!h) return null
     var sopts = []
@@ -58,7 +58,8 @@ module.exports = function (file, opts) {
     this.push(null)
   }
   function walk (node) {
-    if (node.type === 'TemplateLiteral') {
+    if (node.type === 'TemplateLiteral'
+    && node.parent.tag && node.parent.tag.name === tfn) {
       var args = [ node.quasis.map(cooked) ]
         .concat(node.expressions.map(expr))
       var res = hx.apply(null, args)
@@ -74,6 +75,9 @@ module.exports = function (file, opts) {
     && node.callee.type === 'Identifier'
     && node.callee.name === mname) {
       h = node.arguments[0].source()
+      if (node.parent.type === 'VariableDeclarator') {
+        tfn = node.parent.id.name
+      }
       node.update('0')
     }
   }

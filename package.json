@@ -17,13 +17,13 @@
   "author": "substack",
   "license": "BSD",
   "dependencies": {
-    "falafel": "^1.2.0",
-    "hyperx": "^2.0.0",
-    "through2": "^2.0.0"
+    "falafel": "^2.0.0",
+    "hyperx": "^2.0.5",
+    "through2": "^2.0.3"
   },
   "devDependencies": {
-    "browserify": "^13.0.0",
-    "tape": "^4.4.0",
+    "browserify": "^14.1.0",
+    "tape": "^4.6.3",
     "virtual-dom": "^2.1.1"
   },
   "directories": {
